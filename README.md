@@ -78,9 +78,9 @@ formatEuro(price, false);
 ```
 
 #### Features
-Forces 2 decimal places.<br>
-Replaces decimal dot (.) with comma (,).<br>
-Adds a dot (.) as a thousands separator.<br>
+1. Forces 2 decimal places.
+2. Replaces decimal dot (.) with comma (,).
+3. Adds a dot (.) as a thousands separator.
 
 &nbsp;
 ## 🛠 Maintenance
