@@ -54,15 +54,17 @@ formatDate(d, "dddd, DD MMMM YYYY", "en");
 ### formatEuro(amount, includeSymbol)
 Formats numeric values into the standard European/Greek currency format (1.250,50 €).
 
-#### Arguments
-Parameter        Type             Default     Description
-amount           Number/String    Required    The numeric value to format.
-includeSymbol    Boolean          true        Append the ' €' symbol to the end.
 
-#### Features
-Forces 2 decimal places.
-Replaces decimal dot (.) with comma (,).
-Adds a dot (.) as a thousands separator.
+| Parameter | Type | Default | Description |
+| :--- | :---: | :---: | :--- |
+| **`amount`** | Number/String | *Required* | The numeric value you want to format. |
+| **`includeSymbol`** | Boolean | `true` | If `true`, adds **" €"** at the end. |
+
+#### Examples
+| Input | includeSymbol | Result |
+| :--- | :---: | :--- |
+| `1250.5` | `true` | **1.250,50 €** |
+| `1250.5` | `false` | **1.250,50** |
 
 #### Usage Examples
 ```JavaScript
@@ -74,6 +76,11 @@ formatEuro(price);
 // Number only: "1.500,00"
 formatEuro(price, false);
 ```
+
+#### Features
+Forces 2 decimal places.
+Replaces decimal dot (.) with comma (,).
+Adds a dot (.) as a thousands separator.
 
 &nbsp;
 ## 🛠 Maintenance
