@@ -23,7 +23,7 @@ Formats any Memento date field into a readable string. It handles Greek grammar 
 | format | String | "DD MMMM YYYY"  | The desired output pattern. |
 | locale | String | "el" | Language code: "el" (Greek) or "en" (English). |
 
-### Supported Tokens
+#### Supported Tokens
 | Token | Description | Example |
 | :--- | :--- | :--- |
 | dddd | Full day name | Wednesday / Τετάρτη |
@@ -51,20 +51,20 @@ formatDate(d, "dddd, DD MMMM YYYY", "en");
 &nbsp;
 ## 💶 Currency Formatting
 
-## formatEuro(amount, includeSymbol)
+### formatEuro(amount, includeSymbol)
 Formats numeric values into the standard European/Greek currency format (1.250,50 €).
 
-### Arguments
+#### Arguments
 Parameter        Type             Default     Description
 amount           Number/String    Required    The numeric value to format.
 includeSymbol    Boolean          true        Append the ' €' symbol to the end.
 
-### Features
+#### Features
 Forces 2 decimal places.
 Replaces decimal dot (.) with comma (,).
 Adds a dot (.) as a thousands separator.
 
-### Usage Examples
+#### Usage Examples
 ```JavaScript
 var price = field("Amount");
 
@@ -76,6 +76,6 @@ formatEuro(price, false);
 ```
 
 &nbsp;
-# 🛠 Maintenance
+## 🛠 Maintenance
 To add more languages or formatting rules, simply update the languages object in date-utils.js. All changes pushed to GitHub will be available to your Memento libraries upon sync.
 
