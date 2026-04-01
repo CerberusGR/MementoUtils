@@ -15,9 +15,9 @@ A collection of lightweight JavaScript utilities specifically designed for **Mem
 
 
 
-# 📅 Date Formatting:
+# 📅 Date Formatting
 
-#formatDate(date, format, locale)
+# formatDate(date, format, locale)
 Formats any Memento date field into a readable string. It handles Greek grammar rules (Nominative vs. Genitive case) automatically.
 
 ### Arguments
