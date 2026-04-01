@@ -20,20 +20,16 @@ Formats any Memento date field into a readable string. It handles Greek grammar 
 | format | String | "DD MMMM YYYY"  | The desired output pattern. |
 | locale | String | "el" | Language code: "el" (Greek) or "en" (English). |
 
-Parameter,Type,Default,Description
-dateInput,Date/Number,Required,The date value from a Memento field.
-format,String,"""DD MMMM YYYY""",The desired output pattern.
-locale,String,"""el""","Language code: ""el"" (Greek) or ""en"" (English)."
-
-
 ### Supported Tokens
-dddd:  Full day name (e.g., Wednesday / Τετάρτη)
-ddd:   Short day name (e.g., Wed / Τετ)
-DD:    Day of month with leading zero (01-31)
-MMMM:  Full month name (e.g., April / Απριλίου)
-MM:    Month number (01-12)
-YYYY:  4-digit year (2026)
-YY:    2-digit year (26)
+| Token | Description | Example |
+| :--- | :--- | :--- |
+| dddd | Full day name | Wednesday / Τετάρτη |
+| ddd | Short day name | Wed / Τετ |
+| DD | Day of month with leading zero | 01-31 |
+| MMMM | Full month name | April / Απριλίου |
+| MM | Month number | 01-12 |
+| YYYY | 4-digit year | 2026 |
+| YY | 2-digit year | 26 |
 
 #### Usage Examples - JavaScript
 var d = field("MyDate");
