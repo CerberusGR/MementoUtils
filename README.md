@@ -20,7 +20,7 @@ A collection of lightweight JavaScript utilities specifically designed for **Mem
 ## formatDate(date, format, locale)
 Formats any Memento date field into a readable string. It handles Greek grammar rules (Nominative vs. Genitive case) automatically.
 
-#### Arguments
+### Arguments
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | dateInput | Date/Number | Required | The date value from a Memento field. |
