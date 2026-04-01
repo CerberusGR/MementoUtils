@@ -1,36 +1,33 @@
-var days = ["Κυριακή", "Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο"];
-
-// Ονομαστική (για σκέτο μήνα)
-var monthsNom = ["Ιανουάριος", "Φεβρουάριος", "Μάρτιος", "Απρίλιος", "Μάιος", "Ιούνιος", 
-                 "Ιούλιος", "Αύγουστος", "Σεπτέμβριος", "Οκτώβριος", "Νοέμβριος", "Δεκέμβριος"];
-    
-// Γενική (για ημερομηνίες τύπου "15 Ιανουαρίου")
-var monthsGen = ["Ιανουαρίου", "Φεβρουαρίου", "Μαρτίου", "Απριλίου", "Μαΐου", "Ιουνίου", 
-                 "Ιουλίου", "Αυγούστου", "Σεπτεμβρίου", "Οκτωβρίου", "Νοεμβρίου", "Δεκεμβρίου"];
-
-
-function getGreekDay(dateObj) {
-    if (!dateObj) return "";
-    return days[dateObj.getDay()];
+function getGreekDay(dateInput) {
+    return formatDate(dateInput, "dddd");
 }
 
 
-function getGreekMonth(dateObj) {
-    if (!dateObj) return "";
-    return monthsNom[dateObj.getMonth()];
+function getGreekMonth(dateInput) {
+    return formatDate(dateInput, "MMMM");
 }
 
 
+/**
+ * Formats a date string or timestamp into a readable string.
+ * @param {any} dateInput - The date value from Memento (timestamp or string).
+ * @param {string} format - The desired format (default: "DD MMMM YYYY").
+ * @param {string} locale - The language code (default: "el").
+ * @returns {string} - The formatted date string.
+ */
 function formatDate(dateInput, format, locale) {
-    // Ορισμός προεπιλεγμένων τιμών (Defaults)
+    // Set default values if parameters are missing
     format = format || "DD MMMM YYYY"; 
     locale = locale || "el";
 
+    // Handle empty input
     if (!dateInput) return "";
+
     var d = new Date(dateInput);
+    // Check if the date object is valid
     if (isNaN(d.getTime())) return "Invalid Date";
 
-    // Δεδομένα Γλωσσών
+    // Dictionary containing language-specific strings
     var languages = {
         "el": {
             daysFull: ["Κυριακή", "Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο"],
@@ -46,10 +43,10 @@ function formatDate(dateInput, format, locale) {
         }
     };
 
-    // Επιλογή γλώσσας (αν δεν υπάρχει η γλώσσα, πάμε στα αγγλικά)
+    // Fallback to English if the requested locale is not supported
     var lang = languages[locale] || languages["en"];
 
-    // Προετοιμασία τιμών
+    // Extract date components and pad with leading zeros where necessary
     var DD = ("0" + d.getDate()).slice(-2);
     var MM = ("0" + (d.getMonth() + 1)).slice(-2);
     var YYYY = d.getFullYear();
@@ -58,7 +55,7 @@ function formatDate(dateInput, format, locale) {
     var dddd = lang.daysFull[d.getDay()];
     var ddd = lang.daysShort[d.getDay()];
     
-    // Έλεγχος πτώσης για τα Ελληνικά
+    // Logic for Greek grammar: Use Genitive case (monthsGen) if 'DD' is present in format
     var monthName;
     if (locale === "el" && format.indexOf("DD") > -1) {
         monthName = lang.monthsGen[d.getMonth()];
@@ -66,7 +63,7 @@ function formatDate(dateInput, format, locale) {
         monthName = lang.monthsNom[d.getMonth()];
     }
 
-    // Αντικατάσταση
+    // Perform replacements using global regex to match all occurrences
     return format
         .replace(/dddd/g, dddd)
         .replace(/ddd/g, ddd)
