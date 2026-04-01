@@ -1,7 +1,7 @@
 # Memento Database Utilities
 
 A collection of lightweight JavaScript utilities specifically designed for **Memento Database**. This library helps you format dates in Greek and English and display currency values correctly within your Memento fields.
-
+&nbsp;
 ## 🚀 Installation
 
 1. Open your **Memento Database** (Desktop or Pro version).
