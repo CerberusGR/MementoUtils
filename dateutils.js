@@ -32,6 +32,7 @@ function getDate(dateInput, format) {
     var result = format;
     result = result.replace("dd", dd);
     result = result.replace("mm", mm);
+  return mm;
     result = result.replace("YYYY", yyyy);
     result = result.replace("DAY", days[d.getDay()]);
 
