@@ -9,7 +9,7 @@ A collection of lightweight JavaScript utilities specifically designed for **Mem
 3. Click on **Add Repository**.
 4. Link your local folder (synced with this GitHub repo) or provide the repository URL.
 
-
+(
 ## 📅 Date Formatting: formatDate(date, format, locale)
 Formats any Memento date field into a readable string. It handles Greek grammar rules (Nominative vs. Genitive case) automatically.
 
