@@ -13,13 +13,13 @@ A collection of lightweight JavaScript utilities specifically designed for **Mem
 &nbsp;
 ## 📅 Date Formatting (date-utils.js)
 
-### 1. `formatDate(date, format, locale)`
+### 1. `formatDate(dateInput, format, locale)`
 Formats any Memento date field into a readable string. It handles Greek grammar rules (Nominative vs. Genitive case) automatically.
 
 #### Arguments
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| **`date`**  | `Date/Number` | Required | The date value from a Memento field. |
+| **`dateInput`**  | `Date/Number` | Required | The date value from a Memento field. |
 | **`format`**  | `String` | "DD MMMM YYYY"  | The desired output pattern. |
 | **`locale`**  | `String` | "el" | Language code: "el" (Greek) or "en" (English). |
 
@@ -54,22 +54,13 @@ Adds or subtracts days from a specific date.
 #### Arguments
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
-dateInput
+| dateInput | Date | The starting date. |
+| days | Number | Number of days to add (use negative for subtraction). |
 
-Date
-
-The starting date.
-
-days
-
-Number
-
-Number of days to add (use negative for subtraction).
-
-Example:
-
+#### Usage Example
+```Javascript
 // Get the date for 7 days from now
-var nextWeek = addDays(new Date(), 7);
+var nextWeek = addDays(new Date(), 7);```
 
 
 
