@@ -2,6 +2,7 @@
 
 A collection of lightweight JavaScript utilities specifically designed for **Memento Database**. This library helps you format dates in Greek and English and display currency values correctly within your Memento fields.
 
+
 &nbsp;
 ## 🚀 Installation
 
@@ -9,6 +10,7 @@ A collection of lightweight JavaScript utilities specifically designed for **Mem
 2. Go to **Settings** > **Scripts**.
 3. Click on **Add Repository**.
 4. Link your local folder (synced with this GitHub repo) or provide the repository URL.
+
 
 &nbsp;
 ## 📅 Date Formatting (date-utils.js)
@@ -81,10 +83,11 @@ var userAge = getAge(field("Birthday"));
 ### 5. `getGreekDay(date) & getGreekMonth(date)`
 Returns "Τετάρτη" or "Απρίλιος".
 
+
 &nbsp;
 ## 💶 Number and Currency Formatting (number-utils.js)
 
-### formatEuro(amount, includeSymbol)
+### 1. `formatEuro(amount, includeSymbol)`
 Formats numeric values into the standard European/Greek currency format (e.g. 1.250,50 €).
 
 #### Arguments
