@@ -165,6 +165,40 @@ sortAndJoin(field("Fruits"));
 sortAndJoin(field("Fruits"), ", ", true);
 ```
 
+
+
+🔍 Search & String Utilities
+removeAccents(str)
+Strips Greek accents from a string (e.g., changes "ά" to "α", "Ύ" to "Υ"). Extremely useful for case/accent-insensitive comparisons.
+
+Example:
+
+JavaScript
+removeAccents("Μάιος"); // Result: "Μαιος"
+buildSearchIndex(...fields)
+Combines multiple Memento fields (strings, numbers, arrays, currencies) into a single, accent-free text block where each value is separated by a new line. Perfect for creating a hidden "Search Index" Calculation field.
+
+Example usage inside a Calculation Field:
+
+JavaScript
+// You can pass as many fields as you want separated by commas
+buildSearchIndex(
+    field("Title"),
+    field("Price"),
+    field("Categories") // Even if this is an array, it handles it!
+);
+Result Example:
+
+Plaintext
+Iphone 15 Pro
+1200.50
+Kinito, Apple, Smartphone
+
+
+
+
+
+
 &nbsp;
 ## 🛠 Usage Note
 Since these functions are defined globally in your Memento environment, you do not need to use require() or exports. Simply copy the code from `memento-utils.js` into your library's scripts and call the functions directly in any JavaScript field. All changes pushed to GitHub will be available to your Memento libraries upon sync.
