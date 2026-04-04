@@ -5,9 +5,6 @@
 
 var defaultBackColor = "#434343";
 
-
-
-
 /**
  * Chainable Date Formatter (Day.js style)
  * * How to call it:
@@ -40,11 +37,13 @@ function formatDate(dateInput) {
             var languages = {
                 "el": {
                     daysFull: ["Κυριακή", "Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο"],
+                    daysShort: ["Κυρ", "Δευ", "Τρί", "Τετ", "Πέμ", "Παρ", "Σάβ"],
                     monthsNom: ["Ιανουάριος", "Φεβρουάριος", "Μάρτιος", "Απρίλιος", "Μάιος", "Ιούνιος", "Ιούλιος", "Αύγουστος", "Σεπτέμβριος", "Οκτώβριος", "Νοέμβριος", "Δεκέμβριος"],
                     monthsGen: ["Ιανουαρίου", "Φεβρουαρίου", "Μαρτίου", "Απριλίου", "Μαΐου", "Ιουνίου", "Ιουλίου", "Αυγούστου", "Σεπτεμβρίου", "Οκτωβρίου", "Νοεμβρίου", "Δεκεμβρίου"]
                 },
                 "en": {
                     daysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
                     monthsNom: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
                     monthsGen: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
                 }
@@ -55,8 +54,12 @@ function formatDate(dateInput) {
             
             var d = this._date;
             var DD = ("0" + d.getDate()).slice(-2);
+            var MM = ("0" + (d.getMonth() + 1)).slice(-2);
             var YYYY = d.getFullYear();
+            var YY = String(YYYY).slice(-2);
+            
             var dddd = lang.daysFull[d.getDay()];
+            var ddd = lang.daysShort[d.getDay()];
             
             // Logic for nominative / genitive case (Greek grammar)
             var monthName;
@@ -69,9 +72,12 @@ function formatDate(dateInput) {
             // Replace tokens in the string
             return fmt
                 .replace(/dddd/g, dddd)
+                .replace(/ddd/g, ddd)
                 .replace(/DD/g, DD)
                 .replace(/MMMM/g, monthName)
-                .replace(/YYYY/g, YYYY);
+                .replace(/MM/g, MM)
+                .replace(/YYYY/g, YYYY)
+                .replace(/YY/g, YY);
         }
     };
 
@@ -94,8 +100,6 @@ function formatDate(dateInput) {
 // 3. Chaining with a single word (e.g., only the month)
 // Output: "Απρίλιος" (without DD it defaults to nominative case)
 // var test3 = formatDate("2026-04-04").locale("el").format("MMMM");
-
-
 
 
 
