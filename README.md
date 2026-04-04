@@ -1,6 +1,6 @@
 # Memento Database Utilities
 
-A collection of lightweight JavaScript utilities specifically designed for **Memento Database**. This library helps you format dates in Greek and English, perform date calculations, display currency values, and manage UI elements directly within your library scripts.
+A collection of lightweight JavaScript utilities specifically designed for **Memento Database**. This library features a modern, Day.js-style chainable API for dates, in Greek and English, perform date calculations, display currency values, and manage UI elements directly within your library scripts.
 
 &nbsp;
 ## 🚀 Installation
@@ -15,15 +15,17 @@ A collection of lightweight JavaScript utilities specifically designed for **Mem
 ## 📅 Date Utilities
 These functions handle date formatting and calculations with built-in support for Greek grammar (Nominative/Genitive case handling).
 
-### 1. `formatDate(dateInput, format, locale)`
-Formats any Memento date field into a readable string. It handles Greek grammar rules (Nominative vs. Genitive case) automatically.
+### 1. `formatDate(dateInput)` (Chainable API)
+Formats any Memento date field using a modern, chainable approach. It includes built-in support for Greek grammar (automatically switching between Nominative and Genitive cases).
 
 #### Arguments
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | **`dateInput`**  | `Date/Number` | *Required* | The date value from a Memento field. |
-| **`format`**  | `String` | "DD MMMM YYYY"  | The desired output pattern. |
-| **`locale`**  | `String` | "el" | Language code: "el" (Greek) or "en" (English). |
+
+#### Chainable Methods
+**`.locale(lang)`**: Sets the language ("el" for Greek, "en" for English). Defaults to "el".
+**`.format(pattern)`**: Calculates and returns the formatted string. Default pattern is "DD MMMM YYYY".
 
 #### Supported Tokens
 | Token | Description | Example |
@@ -40,14 +42,17 @@ Formats any Memento date field into a readable string. It handles Greek grammar 
 ```javascript
 var d = field("MyDate");
 
-// Greek Default: "02 Απριλίου 2026"
-formatDate(d);
+// 1. Default Greek (Outputs: "04 Απριλίου 2026")
+formatDate(field("MyDate")).format(); 
 
-// Greek Custom: "Τετ, 02/04/26"
-formatDate(d, "ddd, DD/MM/YY");
+// 2. English with default format (Outputs: "04 April 2026")
+formatDate(field("MyDate")).locale("en").format(); 
 
-// English: "Wednesday, 02 April 2026"
-formatDate(d, "dddd, DD MMMM YYYY", "en");
+// 3. Custom Format in English (Outputs: "Wednesday, 04 April")
+formatDate(field("MyDate")).locale("en").format("dddd, DD MMMM");
+
+// 4. Standalone Month in Greek (Outputs: "Απρίλιος" - Nominative case)
+formatDate(field("MyDate")).locale("el").format("MMMM");
 ```
 
 ### 2. `addDays(dateInput, days)`
