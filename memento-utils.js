@@ -6,6 +6,99 @@
 var defaultBackColor = "#434343";
 
 
+
+
+/**
+ * Chainable Date Formatter (Day.js style)
+ * * How to call it:
+ * formatDate("2026-04-15").locale("el").format("DD MMMM YYYY");
+ */
+
+function formatDate(dateInput) {
+    // 1. Create an object that will hold our data (the state)
+    var instance = {
+        // Store the date and the default locale ("el")
+        _date: dateInput ? new Date(dateInput) : new Date(),
+        _locale: "el",
+
+        // 2. The locale() method changes the language
+        locale: function(lang) {
+            this._locale = lang;
+            return this; // <--- THIS IS THE SECRET FOR CHAINING! 
+                         // It returns the object itself so you can call format() next.
+        },
+
+        // 3. The format() method calculates and returns THE STRING (end of chain)
+        format: function(formatString) {
+            // If no format is provided, set a default one
+            var fmt = formatString || "DD MMMM YYYY";
+
+            // If the date is invalid, terminate here
+            if (isNaN(this._date.getTime())) return "Invalid Date";
+
+            // Our dictionaries for languages
+            var languages = {
+                "el": {
+                    daysFull: ["Κυριακή", "Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο"],
+                    monthsNom: ["Ιανουάριος", "Φεβρουάριος", "Μάρτιος", "Απρίλιος", "Μάιος", "Ιούνιος", "Ιούλιος", "Αύγουστος", "Σεπτέμβριος", "Οκτώβριος", "Νοέμβριος", "Δεκέμβριος"],
+                    monthsGen: ["Ιανουαρίου", "Φεβρουαρίου", "Μαρτίου", "Απριλίου", "Μαΐου", "Ιουνίου", "Ιουλίου", "Αυγούστου", "Σεπτεμβρίου", "Οκτωβρίου", "Νοεμβρίου", "Δεκεμβρίου"]
+                },
+                "en": {
+                    daysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                    monthsNom: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                    monthsGen: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+                }
+            };
+
+            // Choose the correct dictionary based on the _locale stored in the object
+            var lang = languages[this._locale] || languages["en"];
+            
+            var d = this._date;
+            var DD = ("0" + d.getDate()).slice(-2);
+            var YYYY = d.getFullYear();
+            var dddd = lang.daysFull[d.getDay()];
+            
+            // Logic for nominative / genitive case (Greek grammar)
+            var monthName;
+            if (this._locale === "el" && fmt.indexOf("DD") > -1) {
+                monthName = lang.monthsGen[d.getMonth()];
+            } else {
+                monthName = lang.monthsNom[d.getMonth()];
+            }
+
+            // Replace tokens in the string
+            return fmt
+                .replace(/dddd/g, dddd)
+                .replace(/DD/g, DD)
+                .replace(/MMMM/g, monthName)
+                .replace(/YYYY/g, YYYY);
+        }
+    };
+
+    // At the end of "formatDate", we return the whole object we created
+    return instance;
+}
+
+// ==========================================
+// USAGE EXAMPLES (For testing purposes)
+// ==========================================
+
+// 1. Only format() (will use the default locale "el")
+// Output: "04 Απριλίου 2026"
+// var test1 = formatDate("2026-04-04").format("DD MMMM YYYY");
+
+// 2. Chaining with locale("en") and format()
+// Output: "04 April 2026"
+// var test2 = formatDate("2026-04-04").locale("en").format("DD MMMM YYYY");
+
+// 3. Chaining with a single word (e.g., only the month)
+// Output: "Απρίλιος" (without DD it defaults to nominative case)
+// var test3 = formatDate("2026-04-04").locale("el").format("MMMM");
+
+
+
+
+
 /**
  * Formats a date string or timestamp into a readable string.
  * Smart version: Automatically detects if the second argument is a locale.
@@ -14,7 +107,7 @@ var defaultBackColor = "#434343";
  * @param {string} locale - The language code (default: "el").
  * @returns {string} - The formatted date string.
  */
-function formatDate(dateInput, format, locale) {
+function formatDate_old(dateInput, format, locale) {
     var defaultFormat = "DD MMMM YYYY";
     var defaultLocale = "el";
 
