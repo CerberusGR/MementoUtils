@@ -171,69 +171,66 @@ function removeAccents(str) {
 function buildSearchIndex() {
     var values = [];
 
-    // Internal helper function to unwrap Memento objects and lists
     function extractText(item) {
         if (item === null || item === undefined || item === "") return "";
         
-        // 1. Handle Dates: format as DD/MM/YYYY
+        // 1. Ημερομηνία
         if (item instanceof Date || (item && typeof item.getTime === 'function')) {
-            var d = ("0" + item.getDate()).slice(-2);
-            var m = ("0" + (item.getMonth() + 1)).slice(-2);
-            var y = item.getFullYear();
-            return d + "/" + m + "/" + y;
+            return ("0" + item.getDate()).slice(-2) + "/" + ("0" + (item.getMonth() + 1)).slice(-2) + "/" + item.getFullYear();
         }
 
-        // 2. Handle Memento Lists or JS Arrays
-        var temp = [];
+        // 2. Λίστες (Arrays ή Java ArrayLists)
         var isList = false;
-
-        if (Array.isArray(item) || (item && item.length !== undefined && typeof item !== 'string')) {
-            for (var i = 0; i < item.length; i++) temp.push(extractText(item[i]));
-            isList = true;
-        } else if (item && item.size && item.get) {
-            // Handle Memento's Java ArrayList (Link to Entry / Multi-choice)
-            var len = (typeof item.size === 'function') ? item.size() : item.size;
-            for (var j = 0; j < len; j++) temp.push(extractText(item.get(j)));
-            isList = true;
-        }
-
+        var len = 0;
+        if (Array.isArray(item)) { isList = true; len = item.length; }
+        else if (item && item.size && typeof item.size === 'function') { isList = true; len = item.size(); }
+        
         if (isList) {
-            var filtered = [];
-            for (var k = 0; k < temp.length; k++) {
-                if (temp[k]) filtered.push(temp[k]); // Ignore empty values
+            var temp = [];
+            for (var i = 0; i < len; i++) {
+                var child = (typeof item.get === 'function') ? item.get(i) : item[i];
+                var t = extractText(child);
+                if (t) temp.push(t);
             }
-            return filtered.join(", ");
+            return temp.join(", ");
         }
 
-        // 3. Handle Memento Entry Objects (Linked entries)
+        // 3. Memento Entry Object (Εδώ γίνεται η "μαγεία")
         if (typeof item === 'object') {
-            if (item.title) return extractText(item.title);
-            if (item.name) return extractText(item.name);
+            // Δοκιμάζουμε όλες τις πιθανές μεθόδους που έχει ένα Entry Object για να δώσει τον τίτλο του
+            var entryTitle = "";
+            if (typeof item.getTitle === 'function') entryTitle = item.getTitle();
+            else if (item.title) entryTitle = item.title;
+            else if (item.name) entryTitle = item.name;
+            else if (typeof item.toString === 'function') {
+                var s = item.toString();
+                if (s.indexOf("object Entry") === -1) entryTitle = s;
+            }
+            
+            if (entryTitle) return extractText(entryTitle);
         }
 
-        // 4. Fallback to String and final cleanup
-        var s = String(item);
+        // 4. Καθαρισμός String
+        var finalStr = String(item).trim();
         
-        // Remove surrounding brackets if Memento cast it to string (e.g., "[Kwstopoulos]")
-        if (s.charAt(0) === '[' && s.charAt(s.length - 1) === ']') {
-            s = s.substring(1, s.length - 1);
+        // Αφαίρεση αγκυλών αν υπάρχουν
+        if (finalStr.indexOf('[') === 0 && finalStr.indexOf(']') === finalStr.length - 1) {
+            finalStr = finalStr.substring(1, finalStr.length - 1);
         }
-        
-        // Ignore unreadable Java classes or objects
-        if (s.indexOf("com.luckydroid") > -1 || s.indexOf("object Object") > -1) {
+
+        // Φιλτράρισμα σκουπιδιών
+        if (finalStr.indexOf("com.luckydroid") > -1 || 
+            finalStr.indexOf("object Entry") > -1 || 
+            finalStr.indexOf("object Object") > -1) {
             return "";
         }
-        
-        return s.trim();
+
+        return finalStr;
     }
 
-    // Process all arguments passed to the function
     for (var arg = 0; arg < arguments.length; arg++) {
         var val = extractText(arguments[arg]);
-        if (val) {
-            values.push(removeAccents(val));
-        }
+        if (val) values.push(removeAccents(val));
     }
-    
     return values.join("\n");
 }
