@@ -1,9 +1,10 @@
 /**
  * MEMENTO DATABASE UTILITIES
- * A collection of helper functions for formatting and UI logic.
+ * A collection of helper functions for formatting, UI logic, and array manipulation.
  */
 
 var defaultBackColor = "#434343";
+
 
 /**
  * Formats a date string or timestamp into a readable string.
@@ -17,7 +18,6 @@ function formatDate(dateInput, format, locale) {
     var defaultFormat = "DD MMMM YYYY";
     var defaultLocale = "el";
 
-    // Smart logic: If 2nd arg is a 2-letter string, treat it as locale
     if (arguments.length === 2 && typeof format === "string" && format.length === 2) {
         locale = format;
         format = defaultFormat;
@@ -155,6 +155,7 @@ function formatEuro(amount, includeSymbol) {
     return includeSymbol ? result + " €" : result;
 }
 
+
 /**
  * Sets the entry background color based on a condition.
  * @param {object} e - The Memento entry object.
@@ -164,4 +165,25 @@ function formatEuro(amount, includeSymbol) {
 function setEntryColor(e, status, colorCode) {
     var finalColor = status ? (colorCode || defaultBackColor) : null;
     e.set("Background Color", finalColor);
+}
+
+
+/**
+ * Sorts an array of strings alphabetically and joins them.
+ * Useful for Multi-choice fields in Memento.
+ * @param {array} list - The array from a Multi-choice field.
+ * @param {string} separator - The character to join with (default: ", ").
+ * @param {boolean} reverse - If true, sorts Z-A (default: false).
+ * @returns {string} - The sorted and joined string.
+ */
+function sortAndJoin(list, separator, reverse) {
+    if (!list || !Array.isArray(list)) return "";
+    
+    separator = separator || ", ";
+    
+    var sorted = list.sort(function(a, b) {
+        return reverse ? b.localeCompare(a, 'el') : a.localeCompare(b, 'el');
+    });
+
+    return sorted.join(separator);
 }
