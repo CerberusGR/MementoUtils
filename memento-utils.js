@@ -5,35 +5,27 @@
 
 var defaultBackColor = "#434343";
 
+// ==========================================
+// DATE UTILITIES
+// ==========================================
 
 /**
  * Chainable Date Formatter (Day.js style)
- * * How to call it:
- * formatDate("2026-04-15").locale("el").format("DD MMMM YYYY");
  */
 function formatDate(dateInput) {
-    // 1. Create an object that will hold our data (the state)
     var instance = {
-        // Store the date and the default locale ("el")
         _date: dateInput ? new Date(dateInput) : new Date(),
         _locale: "el",
 
-        // 2. The locale() method changes the language
         locale: function(lang) {
             this._locale = lang;
-            return this; // <--- THIS IS THE SECRET FOR CHAINING! 
-                         // It returns the object itself so you can call format() next.
+            return this;
         },
 
-        // 3. The format() method calculates and returns THE STRING (end of chain)
         format: function(formatString) {
-            // If no format is provided, set a default one
             var fmt = formatString || "DD MMMM YYYY";
-
-            // If the date is invalid, terminate here
             if (isNaN(this._date.getTime())) return "Invalid Date";
 
-            // Our dictionaries for languages
             var languages = {
                 "el": {
                     daysFull: ["Κυριακή", "Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο"],
@@ -49,9 +41,7 @@ function formatDate(dateInput) {
                 }
             };
 
-            // Choose the correct dictionary based on the _locale stored in the object
             var lang = languages[this._locale] || languages["en"];
-            
             var d = this._date;
             var DD = ("0" + d.getDate()).slice(-2);
             var MM = ("0" + (d.getMonth() + 1)).slice(-2);
@@ -61,7 +51,6 @@ function formatDate(dateInput) {
             var dddd = lang.daysFull[d.getDay()];
             var ddd = lang.daysShort[d.getDay()];
             
-            // Logic for nominative / genitive case (Greek grammar)
             var monthName;
             if (this._locale === "el" && fmt.indexOf("DD") > -1) {
                 monthName = lang.monthsGen[d.getMonth()];
@@ -69,7 +58,6 @@ function formatDate(dateInput) {
                 monthName = lang.monthsNom[d.getMonth()];
             }
 
-            // Replace tokens in the string
             return fmt
                 .replace(/dddd/g, dddd)
                 .replace(/ddd/g, ddd)
@@ -80,31 +68,15 @@ function formatDate(dateInput) {
                 .replace(/YY/g, YY);
         }
     };
-
-    // At the end of "formatDate", we return the whole object we created
     return instance;
 }
 
-
-/**
- * Adds a specific number of days to a date.
- * @param {any} dateInput - The starting date.
- * @param {number} days - Number of days to add (can be negative).
- * @returns {Date} - The new Date object.
- */
 function addDays(dateInput, days) {
     var result = new Date(dateInput);
     result.setDate(result.getDate() + days);
     return result;
 }
 
-
-/**
- * Calculates the difference in days between two dates.
- * @param {any} d1 - First date.
- * @param {any} d2 - Second date.
- * @returns {number} - Absolute number of days.
- */
 function diffInDays(d1, d2) {
     var date1 = new Date(d1);
     var date2 = new Date(d2);
@@ -112,32 +84,14 @@ function diffInDays(d1, d2) {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
 
-
-/**
- * Gets the full name of the day in Greek.
- * @param {any} dateInput - The date value.
- * @returns {string} - Full Greek day name.
- */
 function getGreekDay(dateInput) {
-    return formatDate(dateInput, "dddd", "el");
+    return formatDate(dateInput).locale("el").format("dddd");
 }
 
-
-/**
- * Gets the full name of the month in Greek.
- * @param {any} dateInput - The date value.
- * @returns {string} - Full Greek month name.
- */
 function getGreekMonth(dateInput) {
-    return formatDate(dateInput, "MMMM", "el");
+    return formatDate(dateInput).locale("el").format("MMMM");
 }
 
-
-/**
- * Calculates age in years based on a birth date.
- * @param {any} birthDate - The date of birth.
- * @returns {number} - The age in years.
- */
 function getAge(birthDate) {
     if (!birthDate) return 0;
     var today = new Date();
@@ -151,13 +105,10 @@ function getAge(birthDate) {
     return age;
 }
 
+// ==========================================
+// CURRENCY UTILITIES
+// ==========================================
 
-/**
- * Formats a numeric value into a Euro currency string.
- * @param {number|string} amount - The numeric value.
- * @param {boolean} includeSymbol - Append ' €' symbol (default: true).
- * @returns {string} - Formatted currency string.
- */
 function formatEuro(amount, includeSymbol) {
     if (includeSymbol === undefined) includeSymbol = true;
     var numericAmount = parseFloat(amount);
@@ -169,35 +120,82 @@ function formatEuro(amount, includeSymbol) {
     return includeSymbol ? result + " €" : result;
 }
 
+// ==========================================
+// UI UTILITIES
+// ==========================================
 
-/**
- * Sets the entry background color based on a condition.
- * @param {object} e - The Memento entry object.
- * @param {boolean} status - The condition (true/false).
- * @param {string} colorCode - Optional hex color (default: "#434343").
- */
 function setEntryColor(e, status, colorCode) {
     var finalColor = status ? (colorCode || defaultBackColor) : null;
     e.set("Background Color", finalColor);
 }
 
+// ==========================================
+// ARRAY UTILITIES
+// ==========================================
 
-/**
- * Sorts an array of strings alphabetically and joins them.
- * Useful for Multi-choice fields in Memento.
- * @param {array} list - The array from a Multi-choice field.
- * @param {string} separator - The character to join with (default: ", ").
- * @param {boolean} reverse - If true, sorts Z-A (default: false).
- * @returns {string} - The sorted and joined string.
- */
 function sortAndJoin(list, separator, reverse) {
     if (!list || !Array.isArray(list)) return "";
-    
     separator = separator || ", ";
-    
     var sorted = list.sort(function(a, b) {
         return reverse ? b.localeCompare(a, 'el') : a.localeCompare(b, 'el');
     });
-
     return sorted.join(separator);
+}
+
+// ==========================================
+// SEARCH & STRING UTILITIES
+// ==========================================
+
+/**
+ * Removes Greek accents from a string.
+ * @param {string} str - The input string.
+ * @returns {string} - The string without accents.
+ */
+function removeAccents(str) {
+    if (!str) return "";
+    var s = String(str);
+    
+    // A bulletproof map for Memento's JS engine
+    var accents = {
+        'ά':'α', 'έ':'ε', 'ή':'η', 'ί':'ι', 'ό':'ο', 'ύ':'υ', 'ώ':'ω',
+        'Ά':'Α', 'Έ':'Ε', 'Ή':'Η', 'Ί':'Ι', 'Ό':'Ο', 'Ύ':'Υ', 'Ώ':'Ω',
+        'ϊ':'ι', 'ϋ':'υ', 'ΐ':'ι', 'ΰ':'υ'
+    };
+    
+    return s.replace(/[άέήίόύώΆΈΉΊΌΎΏϊϋΐΰ]/g, function(match) {
+        return accents[match];
+    });
+}
+
+/**
+ * Builds a search index string from multiple fields.
+ * Joins them with a newline and removes accents.
+ * Accepts any number of arguments (Strings, Numbers, Arrays).
+ * @returns {string} - The formatted search index.
+ */
+function buildSearchIndex() {
+    var values = [];
+    
+    // arguments object contains all passed parameters
+    for (var i = 0; i < arguments.length; i++) {
+        var val = arguments[i];
+        
+        // Skip empty values
+        if (val === null || val === undefined || val === "") {
+            continue;
+        }
+        
+        // If it's a Multi-choice or Link field (Array)
+        if (Array.isArray(val)) {
+            val = val.join(", ");
+        } else {
+            val = String(val); // Convert numbers/currency to string
+        }
+        
+        // Remove accents and add to our list
+        values.push(removeAccents(val));
+    }
+    
+    // Join everything with a new line
+    return values.join("\n");
 }
