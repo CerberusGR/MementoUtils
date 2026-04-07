@@ -247,11 +247,17 @@ function removeAccents(str) {
  * Aggressively parses Memento Java Lists and Entry Objects.
  * Joins all values with newlines and removes accents.
  * Supports text, number, currency, array and list field types.
- * @param {string[]} fieldNames - Array of field names to include in the index.
+ * Accepts either a single field name (string) or multiple field names (array).
+ * @param {string|string[]} fieldNames - Single field name or array of field names.
  * @returns {string} - The formatted search index string.
  */
 function buildSearchIndex(fieldNames) {
   var lines = [];
+
+  // Normalize input: accept both string and array
+  if (typeof fieldNames === 'string') {
+    fieldNames = [fieldNames];
+  }
 
   for (var i = 0; i < fieldNames.length; i++) {
     var val = field(fieldNames[i]);
@@ -286,4 +292,3 @@ function buildSearchIndex(fieldNames) {
 
   return lines.join('\n');
 }
-
