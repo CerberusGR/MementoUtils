@@ -307,3 +307,21 @@ function buildSearchIndex(fieldNames) {
 
   return lines.join('\n');
 }
+
+
+function buildSearchIndex3(fieldNames) {
+  var lines = [];
+  var debug = [];
+
+  if (typeof fieldNames === 'string') {
+    fieldNames = [fieldNames];
+  }
+
+  for (var i = 0; i < fieldNames.length; i++) {
+    var val = field(fieldNames[i]);
+    // Log τι επιστρέφει κάθε field
+    debug.push(fieldNames[i] + ': [' + typeof val + '] ' + val);
+  }
+
+  return debug.join('\n');
+}
