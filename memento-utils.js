@@ -334,3 +334,33 @@ function buildSearchIndex() {
 
   return lines.join('\n');
 }
+
+
+function debugField(fieldName) {
+  var val = field(fieldName);
+  var info = [];
+  
+  info.push('field: ' + fieldName);
+  info.push('typeof: ' + typeof val);
+  info.push('toString: ' + val);
+  info.push('isArray: ' + Array.isArray(val));
+  
+  if (typeof val === 'object' && val !== null) {
+    info.push('has size(): ' + (typeof val.size === 'function'));
+    info.push('has get(): ' + (typeof val.get === 'function'));
+    info.push('has length: ' + (val.length !== undefined));
+    info.push('has title(): ' + (typeof val.title === 'function'));
+    info.push('has forEach(): ' + (typeof val.forEach === 'function'));
+    info.push('has iterator(): ' + (typeof val.iterator === 'function'));
+    
+    // Αν έχει size, δες το πρώτο στοιχείο
+    if (typeof val.size === 'function' && val.size() > 0) {
+      var first = val.get(0);
+      info.push('first item typeof: ' + typeof first);
+      info.push('first item toString: ' + first);
+      info.push('first has title(): ' + (typeof first.title === 'function'));
+    }
+  }
+  
+  return info.join('\n');
+}
