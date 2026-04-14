@@ -184,16 +184,16 @@ function getLinkedField(linkName, index, targetName) {
 // ---------------------------------------------------------
 
 // 1. Get the company name from the 1st job (Index 0)
-var companyName = getLinkedField("Θέση Εργασίας", 0, "Επωνυμία / Επώνυμο");
+//var companyName = getLinkedField("Θέση Εργασίας", 0, "Επωνυμία / Επώνυμο");
 
 // 2. Get the city from the 2nd address (Index 1) - if it exists!
-var secondCity = getLinkedField("Διευθύνσεις", 1, "Πόλη");
+//var secondCity = getLinkedField("Διευθύνσεις", 1, "Πόλη");
 
 // 3. Get the phone number from the 1st linked contact
-var firstPhone = getLinkedField("Επαφές", 0, "Τηλέφωνο");
+//var firstPhone = getLinkedField("Επαφές", 0, "Τηλέφωνο");
 
 // Return whatever you need for this specific script
-companyName;
+//companyName;
 
 
 
