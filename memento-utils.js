@@ -4,6 +4,8 @@
  */
 
 /**
+ * AVAILIABLE FUNCTIONS
+ *
  * Date Utilities:
  *   formatDate(dateInput)
  *   addDays(dateInput, days)
