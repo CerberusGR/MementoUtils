@@ -30,7 +30,6 @@ function checkDuplicate(thisEntry, fieldName) {
 
     // If the field is empty, there's nothing to check
     if (!currentValue) {
-message('empty ')
         return false; 
     }
 
