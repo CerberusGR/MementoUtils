@@ -80,6 +80,7 @@ function clearFields(fieldNames) {
 
 var defaultBackColor = "#434343";
 
+
 // ==========================================
 // DATE UTILITIES
 // ==========================================
@@ -159,14 +160,6 @@ function diffInDays(d1, d2) {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
 
-function getGreekDay(dateInput) {
-    return formatDate(dateInput).locale("el").format("dddd");
-}
-
-function getGreekMonth(dateInput) {
-    return formatDate(dateInput).locale("el").format("MMMM");
-}
-
 function getAge(birthDate) {
     if (!birthDate) return 0;
     var today = new Date();
@@ -179,6 +172,15 @@ function getAge(birthDate) {
     }
     return age;
 }
+
+function getGreekDay(dateInput) {
+    return formatDate(dateInput).locale("el").format("dddd");
+}
+
+function getGreekMonth(dateInput) {
+    return formatDate(dateInput).locale("el").format("MMMM");
+}
+
 
 // ==========================================
 // CURRENCY UTILITIES
@@ -195,6 +197,7 @@ function formatEuro(amount, includeSymbol) {
     return includeSymbol ? result + " €" : result;
 }
 
+
 // ==========================================
 // UI UTILITIES
 // ==========================================
@@ -203,6 +206,7 @@ function setEntryColor(e, status, colorCode) {
     var finalColor = status ? (colorCode || defaultBackColor) : null;
     e.set("Background Color", finalColor);
 }
+
 
 // ==========================================
 // ARRAY UTILITIES
