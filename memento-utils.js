@@ -4,6 +4,48 @@
  */
 
 
+
+// Function to check if the current value of a specific field already exists
+function checkDuplicate(thisEntry, fieldName) {
+    // Get the value the user just typed
+    var currentValue = thisEntry.field(fieldName);
+    message(currentValue)
+    // If the field is empty, there's nothing to check
+    if (!currentValue) {
+message('empty ')
+        return false; 
+    }
+
+    var currentLib = lib();
+    var allEntries = currentLib.entries();
+    
+    // Get current entry ID to avoid comparing the entry to itself during an Edit
+    var currentEntry = entry();
+    var currentId = currentEntry ? currentEntry.id : null; 
+
+    // Loop through all saved entries
+    for (var i = 0; i < allEntries.length; i++) {
+        var savedEntry = allEntries[i];
+        
+        // Skip the exact same entry
+        if (currentId && savedEntry.id === currentId) {
+            continue;
+        }
+        
+        // Get the value of the saved entry for the given field
+        var savedValue = savedEntry.field(fieldName);
+        
+        // Compare values (case-insensitive)
+        if (savedValue && savedValue.toLowerCase() === currentValue.toLowerCase()) {
+            return true; // Duplicate found!
+        }
+    }
+    
+    return false; // No duplicates found
+}
+
+
+
 // Function to clear or empty multiple fields
 function clearFields(fieldNames) {
     // Ensure the input is a valid array
