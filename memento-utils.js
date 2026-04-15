@@ -3,6 +3,24 @@
  * A collection of helper functions for formatting, UI logic, and array manipulation.
  */
 
+/**
+ * Date Utilities:
+ *   formatDate(dateInput)
+ *   addDays(dateInput, days)
+ *   diffInDays(d1, d2)
+ *   getAge(birthDate)
+ *   getGreekDay(dateInput)
+ *   getGreekMonth(dateInput)
+ *
+ * Currency Utilities:
+ *   formatEuro(amount, includeSymbol)
+ *
+ * UI Utilities:
+ *   setEntryColor(e, status, colorCode)
+ *
+ * Array Utilities:
+ *   sortAndJoin(list, separator, reverse)
+ */
 
 
 // Function to check if the current value of a specific field already exists
